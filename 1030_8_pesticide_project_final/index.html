@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>농약 정보</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="app-header">
+    <div class="brand" onclick="goHome()">
+        <span class="brand-dot"></span>
+        <strong>농약 정보</strong>
+    </div>
+</header>
+
+<!-- ───────── 홈 · 검색 ───────── -->
+<main id="homePage" class="page">
+    <section class="hero">
+        <h1>필요한 농약 정보를<br><em>한눈에 찾아보세요</em></h1>
+        <p>농약명·성분명, 작물, 병해충을 알고 있는 만큼만 입력하세요.</p>
+
+        <div class="search-panel">
+            <div class="field">
+                <label for="productInput">농약명 / 성분명</label>
+                <input id="productInput" type="text" placeholder="예: 가가방, 만코제브" autocomplete="off">
+            </div>
+            <div class="field">
+                <label for="cropInput">작물</label>
+                <input id="cropInput" type="text" placeholder="예: 토마토" autocomplete="off">
+            </div>
+            <div class="field">
+                <label for="pestInput">병해충</label>
+                <input id="pestInput" type="text" placeholder="예: 역병" autocomplete="off">
+            </div>
+            <button class="btn-primary" onclick="searchPesticide()">검색하기</button>
+        </div>
+
+        <div id="recentWrap" class="recent" hidden>
+            <span class="recent-label">최근 검색</span>
+            <div id="recentSearches" class="recent-chips"></div>
+            <button class="link-btn" onclick="clearRecentSearches()">전체삭제</button>
+        </div>
+    </section>
+
+    <!-- 검색 후에만 나타남 -->
+    <section id="resultSection" class="card result-section" hidden>
+        <div class="result-header">
+            <div>
+                <h2>검색 결과</h2>
+                <p id="resultSummary" class="muted small"></p>
+            </div>
+            <label class="sort-box">
+                <span>정렬</span>
+                <select id="sortSelect" onchange="changeSort()">
+                    <option value="recommend">추천순</option>
+                    <option value="tox">유해성 낮은 순</option>
+                    <option value="name">이름순</option>
+                </select>
+            </label>
+        </div>
+        <div id="purposeFilter" class="filter-chips"></div>
+        <div id="searchResults"></div>
+        <div class="more-wrap"><button id="moreButton" class="btn-soft" onclick="loadMore()" hidden>더 보기</button></div>
+        <p class="rank-note" id="rankNote"></p>
+    </section>
+</main>
+
+<!-- ───────── 농약 상세 ───────── -->
+<main id="detailPage" class="page" hidden>
+    <div class="topbar">
+        <button class="icon-btn" onclick="backFromDetail()" aria-label="검색 결과로 돌아가기">← 뒤로</button>
+        <h1>농약 상세</h1>
+        <span></span>
+    </div>
+    <div id="detailContent"></div>
+</main>
+
+<!-- ───────── 성분 ───────── -->
+<main id="ingredientPage" class="page" hidden>
+    <div class="topbar">
+        <button class="icon-btn" onclick="backFromIngredient()" aria-label="뒤로">←</button>
+        <h1>성분</h1>
+        <span></span>
+    </div>
+    <section class="card">
+        <h2 class="section-title">성분 유해성 구성</h2>
+        <div id="ingredientBar"></div>
+        <div class="search-inline">
+            <input id="ingredientSearchInput" type="text" placeholder="성분명, 영문명, CAS로 검색">
+            <button class="btn-primary small" onclick="searchIngredients()">검색</button>
+        </div>
+    </section>
+    <div id="ingredientList"></div>
+    <div id="ingredientDetail"></div>
+</main>
+
+<!-- ───────── 농약 추천 ───────── -->
+<main id="recommendPage" class="page" hidden>
+    <div class="topbar">
+        <button class="icon-btn" onclick="goHome()" aria-label="홈">←</button>
+        <h1>농약 추천</h1>
+        <span></span>
+    </div>
+
+    <section class="intro mint">
+        <span class="tag">RECOMMEND</span>
+        <h2>작물과 병해충을 입력하면<br>유해성이 가장 낮은 농약 <em>1개</em>를 추천해요</h2>
+        <p>해당 작물·병해충에 사용등록된 제품 중, 인체건강 유해성 점수(덴마크 PLI 참고)가 확정된 제품만 비교합니다.</p>
+    </section>
+
+    <section class="card form-card">
+        <div class="form-grid two">
+            <div class="field">
+                <label for="recCrop">작물</label>
+                <input id="recCrop" placeholder="예: 토마토" autocomplete="off">
+            </div>
+            <div class="field">
+                <label for="recPest">병해충</label>
+                <input id="recPest" placeholder="예: 역병" autocomplete="off">
+            </div>
+        </div>
+        <button class="btn-primary wide" onclick="runRecommend()">추천 받기</button>
+    </section>
+
+    <div id="recommendResult"></div>
+</main>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
